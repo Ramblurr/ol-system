@@ -1,0 +1,7 @@
+{:paths ["src"]
+ :deps
+ {
+  integrant/integrant       {:mvn/version "0.8.0"}
+  io.replikativ/datahike    {:mvn/version "0.4.1480"}
+  org.clojure/tools.logging {:mvn/version "1.2.4"}
+  }}

@@ -1,0 +1,6 @@
+{:paths ["src"]
+ :deps
+ {
+  integrant/integrant {:mvn/version "0.8.0"}
+  http-kit/http-kit   {:mvn/version "2.5.3"}
+  }}

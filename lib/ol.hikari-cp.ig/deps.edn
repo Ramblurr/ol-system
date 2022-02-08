@@ -1,0 +1,7 @@
+{:paths ["src"]
+ :deps
+ {
+  integrant/integrant {:mvn/version "0.8.0"}
+  hikari-cp/hikari-cp {:mvn/version "2.13.0"}
+  ol/system           {:local/root "../ol.system"}
+  }}
