@@ -87,13 +87,10 @@
     :frequency (apply t/new-duration frequency)
     :start-at (time-from-now (apply t/new-duration initial-delay))))
 
-(defn make-job [jobs-def key config]
-  (when-let [maker (key jobs-def)]
-    (maker config)))
-
 (defn start-jobs [jobs-def jobs-config]
   (run!
-    (fn [job-key] (make-job jobs-def job-key (job-key jobs-config)))
+    (fn [job-key]
+      ((job-key jobs-def) (job-key jobs-config)))
     (keys jobs-config)))
 
 (comment
