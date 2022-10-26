@@ -3,8 +3,8 @@
             [integrant.core :as ig]))
 
 (defmethod ig/init-key :ol.ig/jobs
-  [_ system]
-  (jobs/start-jobs job-defs system))
+  [_ {:keys [job-defs env] :as system}]
+  (jobs/start-jobs job-defs (:jobs env)))
 
 (defmethod ig/halt-key! :ol.ig/jobs
   [_ _]
