@@ -15,12 +15,5 @@
   pjstadig/humane-test-output {:mvn/version "0.11.0"}
 
   ;ol/logging.dev {:local/root "../ol.logging.dev"}
-
-  ;; add-lib branch, see http://insideclojure.org/2018/05/04/add-lib/
-
-  ;; aws-maven brings in a logback.xml, causing horrible errors.  Using a fork
-  ;; which has removed it.
-  ;;org.clojure/tools.deps.alpha {:git/url "https://github.com/SevereOverfl0w/tools.deps.alpha.git"
-  ;;                              :sha "a4173975e22e5a41cc3be85270729ed102be3917"
-  ;;                             :exclusions [org.slf4j/slf4j-nop]}
+  org.clojure/tools.deps.alpha {:mvn/version "0.12.1158"}
   }}
