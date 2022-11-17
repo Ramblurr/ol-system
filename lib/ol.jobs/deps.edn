@@ -1,9 +1,8 @@
 {:paths ["src"]
  :deps
- {
-  integrant/integrant {:mvn/version "0.8.0"}
-  jarohen/chime       {:mvn/version "0.3.3"}
-  nano-id/nano-id     {:mvn/version "1.0.0"}
-  tick/tick           {:mvn/version "0.5.0-RC5"}
-  ol/system           {:git/url "https://github.com/ramblurr/ol-system.git" :git/sha "774eb939de56d23269c05e4a6f45fa618daf351e" :deps/root "lib/ol.system"}
-  }}
+ {integrant/integrant       {:mvn/version "0.8.0"}
+  org.clojure/tools.logging {:mvn/version "1.2.4"}
+  jarohen/chime             {:mvn/version "0.3.3"}
+  nano-id/nano-id           {:mvn/version "1.0.0"}
+  tick/tick                 {:mvn/version "0.5.0-RC5"}
+  ol/system                 {:git/url "https://github.com/ramblurr/ol-system.git" :git/sha "e9330c1a2dd987072fd51346bec41ccea2bc673e" :deps/root "lib/ol.system"}}}

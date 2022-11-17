@@ -1,9 +1,9 @@
 (ns ol.jobs-util
   (:require
-    [nano-id.core :refer [nano-id]]
-    [chime.core :as chime]
-    [tick.core :as t]
-    ))
+   [clojure.tools.logging :as log]
+   [nano-id.core :refer [nano-id]]
+   [chime.core :as chime]
+   [tick.core :as t]))
 (declare stop-all-schedules)
 (defonce schedules (atom []))
 
@@ -19,7 +19,6 @@
   (t/>> (-> (t/now)
             (t/in "America/Los_Angeles"))
         duration))
-
 
 (defn create-schedule
   "Create a schedule that calls a handler
@@ -43,10 +42,10 @@
       :or   {start-at (t/now)}}]
   (let [schedule-id (nano-id)
         schedule (chime/chime-at
-                   (chime/periodic-seq
-                     start-at
-                     frequency)
-                   (fn [time] (handler time)))]
+                  (chime/periodic-seq
+                   start-at
+                   frequency)
+                  (fn [time] (handler time)))]
     (swap! schedules conj {:id         schedule-id
                            :name       name
                            :frequency  frequency
@@ -57,8 +56,8 @@
   "Stop a running schedule based on it's id"
   [schedule-id]
   (let [matched-schedule (first (filter
-                                  (fn [{:keys [id]}] (= id schedule-id))
-                                  @schedules))]
+                                 (fn [{:keys [id]}] (= id schedule-id))
+                                 @schedules))]
     (when matched-schedule
       (let [closeable (:closeable matched-schedule)
             updated-schedules (filter (fn [schedule]
@@ -83,21 +82,24 @@
 
 (defn make-repeating-job [handler frequency initial-delay]
   (create-schedule
-    :handler handler
-    :frequency (apply t/new-duration frequency)
-    :start-at (time-from-now (apply t/new-duration initial-delay))))
+   :handler handler
+   :frequency (apply t/new-duration frequency)
+   :start-at (time-from-now (apply t/new-duration initial-delay))))
 
 (defn start-jobs [jobs-def jobs-config]
   (run!
-    (fn [job-key]
-      ((job-key jobs-def) (job-key jobs-config)))
-    (keys jobs-config)))
+   (fn [job-key]
+     (if-let [job-fn (get jobs-def job-key)]
+       (job-fn (job-key jobs-config))
+       (log/warn (format "job definition for %s not found. skipping job." (str job-key)))))
+
+   (keys jobs-config)))
 
 (comment
   (create-schedule
-    :handler (fn [time] (println "ping" time))
-    :frequency (t/new-duration 1 :seconds)
-    :start-at (time-from-now (t/new-duration 1 :seconds)))
+   :handler (fn [time] (println "ping" time))
+   :frequency (t/new-duration 1 :seconds)
+   :start-at (time-from-now (t/new-duration 1 :seconds)))
 
   @schedules
 
@@ -107,9 +109,7 @@
   (tap> @schedules)
 
   (start-jobs {:ping (fn [_] (println "ping"))}
-              {:ping {
-                      :frequency     [2 :seconds]
-                      :initial-delay [0 :seconds]
-                      }})
+              {:ping {:frequency     [2 :seconds]
+                      :initial-delay [0 :seconds]}})
   ;;
   )
